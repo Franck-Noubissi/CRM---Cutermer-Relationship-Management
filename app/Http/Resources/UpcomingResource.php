@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TodayTaskResource extends JsonResource
+class UpcomingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,6 +19,7 @@ class TodayTaskResource extends JsonResource
             'title' => $this->title,
             'completed' => $this->completed,
             'approved' => $this->approved,
+            'waiting' => $this->waiting,
             'taskId' => $this->taskId
         ];
     }
