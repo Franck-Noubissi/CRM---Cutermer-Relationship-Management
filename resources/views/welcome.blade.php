@@ -8,12 +8,14 @@
 
         <!-- Style -->
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
+        <link href="{{asset('css/styles.css')}}" rel="stylesheet">
+
 
     </head>
 
     <body class="antialiased">
         <div id="app">
-            <example-component></example-component>
+            <app-component></app-component>
         </div>
 
         <!-- Script -->
