@@ -8,24 +8,64 @@
 
     <p>Planifiez les tâches de vos projets en toute sérénité.</p>
 
-    <div class="task">
+    <img src="../images/users.png" alt="users-icon" />
+
+    <!-- Today's tasks -->
+    <div class="upcoming">
       <div class="add-tasks">
-        <h2>Tâches à réaliser</h2>
+        <h1>Tâches à réaliser</h1 >
 
         <div class="add-action">
           <img src="../images/add.png" alt="add-icon" />
         </div>
       </div>
 
-      <ul class="tasks-list"></ul>
+      <ul class="tasks-list">
+        <li v-for="task in todayTask" v-bind:key="task.id">
+          <div class="info">
+            <div class="left">
+              <label class="myCheckbox">
+                <input
+                  type="checkbox"
+                  name="test"
+                  :checked="task.completed"
+                  @change="updateTodayTask(task.taskId)"
+                />
+                <span></span>
+              </label>
+
+              <h4>{{ task.title }}</h4>
+            </div>
+
+            <div class="right">
+              <img src="../images/edit.png" alt="edit-icon" />
+              <img
+                src="../images/del.png"
+                alt="trash-icon"
+                @click="delTodayTask(task.taskId)"
+              />
+
+              <button
+                v-bind:class="{
+                  inprogress: !task.approved,
+                  approved: task.approved,
+                }"
+              >
+                {{ task.approved ? "Terminé" : "En cours" }}
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
 
+    <!-- Upcoming tasks -->
     <div class="upcoming">
       <div class="add-tasks">
         <h2>Tâches</h2>
 
         <div class="add-action">
-          <img src="../images/add.png" alt="" />
+          <img src="../images/add.png" alt="add-icon" />
         </div>
       </div>
 
@@ -51,12 +91,20 @@
             </div>
 
             <div class="right">
-              <img src="../images/edit.png" alt="" />
+              <img src="../images/edit.png" alt="edit-icon" />
               <img
                 src="../images/del.png"
-                alt=""
+                alt="trash-icon"
                 @click="delUpcoming(upcomingtask.taskId)"
               />
+
+              <button
+                v-bind:class="{
+                  inprogress: !upcoming.waiting,
+                }"
+              >
+                En attente
+              </button>
             </div>
           </div>
         </li>
@@ -121,9 +169,9 @@ export default {
       }
     },
 
-    // Delete upcoming task
+    // Delete upcoming's task
     delUpcoming(taskId) {
-      if (confirm("Etes-vous sûr de vouloir supprimer cette tâche ?")) {
+      if (confirm("Etes-vous sûr(e) de vouloir supprimer cette tâche ?")) {
         fetch(`/api/upcoming/${taskId}`, {
           method: "delete",
         })
@@ -156,11 +204,61 @@ export default {
     },
 
     //** Today Task method */
-    // Get today task
-    fetchTodayTasks() {},
+    // Get today's task
+    fetchTodayTasks() {
+      fetch("/api/dailytask")
+        .then((res) => res.json())
+        .then(({ data }) => (this.todayTask = data))
+        .catch((err) => console.log(err));
+    },
 
     // Add daily task
-    addDailyTask(taskId) {},
+    addDailyTask(taskId) {
+      // Get task
+      const task = this.upcoming.filter(({ taskId: id }) => id == taskId)[0];
+
+      // Post request
+      fetch("/api/dailytask", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(task),
+      })
+        .then(() => this.todayTask.unshift(task))
+        .catch((err) => console.log(err));
+    },
+
+    // Update today's task
+    updateTodayTask(taskId) {
+      if (confirm("Tâche terminée.")) {
+        fetch(`/api/dailytask/${taskId}`, {
+          method: 'delete'
+        }).then(() => {})
+        .then(() => {
+          this.todayTask = this.todayTask.filter(
+            ({taskId: id}) => id !== taskId
+          );
+        })
+      }
+    },
+
+    // Delete today's task
+    delTodayTask(taskId) {
+      if (confirm("Etes-vous sûr(e) de vouloir supprimer cette tâche ?")) {
+        fetch(`/api/dailytask/${taskId}`, {
+          method: "delete",
+        })
+          .then((res) => res.json())
+          .then(
+            () =>
+              (this.todayTask = this.todayTask.filter(
+                ({ taskId: id }) => id !== taskId
+              ))
+          )
+          .catch((err) => console.log(err));
+      }
+    },
   },
 };
 </script>

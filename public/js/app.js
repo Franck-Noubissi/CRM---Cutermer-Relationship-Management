@@ -2280,6 +2280,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2335,11 +2383,11 @@ __webpack_require__.r(__webpack_exports__);
         this.newTask = "";
       }
     },
-    // Delete upcoming task
+    // Delete upcoming's task
     delUpcoming: function delUpcoming(taskId) {
       var _this3 = this;
 
-      if (confirm("Etes-vous sûr de vouloir supprimer cette tâche ?")) {
+      if (confirm("Etes-vous sûr(e) de vouloir supprimer cette tâche ?")) {
         fetch("/api/upcoming/".concat(taskId), {
           method: "delete"
         }).then(function (res) {
@@ -2375,10 +2423,75 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     //** Today Task method */
-    // Get today task
-    fetchTodayTasks: function fetchTodayTasks() {},
+    // Get today's task
+    fetchTodayTasks: function fetchTodayTasks() {
+      var _this5 = this;
+
+      fetch("/api/dailytask").then(function (res) {
+        return res.json();
+      }).then(function (_ref4) {
+        var data = _ref4.data;
+        return _this5.todayTask = data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
     // Add daily task
-    addDailyTask: function addDailyTask(taskId) {}
+    addDailyTask: function addDailyTask(taskId) {
+      var _this6 = this;
+
+      // Get task
+      var task = this.upcoming.filter(function (_ref5) {
+        var id = _ref5.taskId;
+        return id == taskId;
+      })[0]; // Post request
+
+      fetch("/api/dailytask", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(task)
+      }).then(function () {
+        return _this6.todayTask.unshift(task);
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    // Update today's task
+    updateTodayTask: function updateTodayTask(taskId) {
+      var _this7 = this;
+
+      if (confirm("Tâche terminée.")) {
+        fetch("/api/dailytask/".concat(taskId), {
+          method: 'delete'
+        }).then(function () {}).then(function () {
+          _this7.todayTask = _this7.todayTask.filter(function (_ref6) {
+            var id = _ref6.taskId;
+            return id !== taskId;
+          });
+        });
+      }
+    },
+    // Delete today's task
+    delTodayTask: function delTodayTask(taskId) {
+      var _this8 = this;
+
+      if (confirm("Etes-vous sûr(e) de vouloir supprimer cette tâche ?")) {
+        fetch("/api/dailytask/".concat(taskId), {
+          method: "delete"
+        }).then(function (res) {
+          return res.json();
+        }).then(function () {
+          return _this8.todayTask = _this8.todayTask.filter(function (_ref7) {
+            var id = _ref7.taskId;
+            return id !== taskId;
+          });
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      }
+    }
   }
 });
 
@@ -6888,6 +7001,16 @@ module.exports = "/images/plus.png?c046340c1e218a064d17c1ad149483ec";
 /***/ ((module) => {
 
 module.exports = "/images/search.png?0a54c500144c90d8371209115d7021cd";
+
+/***/ }),
+
+/***/ "./resources/js/images/users.png":
+/*!***************************************!*\
+  !*** ./resources/js/images/users.png ***!
+  \***************************************/
+/***/ ((module) => {
+
+module.exports = "/images/users.png?7f1eadfdb258c7d3daf90ba4f1d7555a";
 
 /***/ }),
 
@@ -38342,7 +38465,80 @@ var render = function () {
     _vm._v(" "),
     _c("p", [_vm._v("Planifiez les tâches de vos projets en toute sérénité.")]),
     _vm._v(" "),
-    _vm._m(1),
+    _c("img", {
+      attrs: { src: __webpack_require__(/*! ../images/users.png */ "./resources/js/images/users.png"), alt: "users-icon" },
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "upcoming" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "ul",
+        { staticClass: "tasks-list" },
+        _vm._l(_vm.todayTask, function (task) {
+          return _c("li", { key: task.id }, [
+            _c("div", { staticClass: "info" }, [
+              _c("div", { staticClass: "left" }, [
+                _c("label", { staticClass: "myCheckbox" }, [
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "test" },
+                    domProps: { checked: task.completed },
+                    on: {
+                      change: function ($event) {
+                        return _vm.updateTodayTask(task.taskId)
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("span"),
+                ]),
+                _vm._v(" "),
+                _c("h4", [_vm._v(_vm._s(task.title))]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "right" }, [
+                _c("img", {
+                  attrs: {
+                    src: __webpack_require__(/*! ../images/edit.png */ "./resources/js/images/edit.png"),
+                    alt: "edit-icon",
+                  },
+                }),
+                _vm._v(" "),
+                _c("img", {
+                  attrs: {
+                    src: __webpack_require__(/*! ../images/del.png */ "./resources/js/images/del.png"),
+                    alt: "trash-icon",
+                  },
+                  on: {
+                    click: function ($event) {
+                      return _vm.delTodayTask(task.taskId)
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    class: {
+                      inprogress: !task.approved,
+                      approved: task.approved,
+                    },
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(task.approved ? "Terminé" : "En cours") +
+                        "\n            "
+                    ),
+                  ]
+                ),
+              ]),
+            ]),
+          ])
+        }),
+        0
+      ),
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "upcoming" }, [
       _vm._m(2),
@@ -38400,17 +38596,33 @@ var render = function () {
               _vm._v(" "),
               _c("div", { staticClass: "right" }, [
                 _c("img", {
-                  attrs: { src: __webpack_require__(/*! ../images/edit.png */ "./resources/js/images/edit.png"), alt: "" },
+                  attrs: {
+                    src: __webpack_require__(/*! ../images/edit.png */ "./resources/js/images/edit.png"),
+                    alt: "edit-icon",
+                  },
                 }),
                 _vm._v(" "),
                 _c("img", {
-                  attrs: { src: __webpack_require__(/*! ../images/del.png */ "./resources/js/images/del.png"), alt: "" },
+                  attrs: {
+                    src: __webpack_require__(/*! ../images/del.png */ "./resources/js/images/del.png"),
+                    alt: "trash-icon",
+                  },
                   on: {
                     click: function ($event) {
                       return _vm.delUpcoming(upcomingtask.taskId)
                     },
                   },
                 }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    class: {
+                      inprogress: !_vm.upcoming.waiting,
+                    },
+                  },
+                  [_vm._v("\n              En attente\n            ")]
+                ),
               ]),
             ]),
           ])
@@ -38435,18 +38647,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "task" }, [
-      _c("div", { staticClass: "add-tasks" }, [
-        _c("h2", [_vm._v("Tâches à réaliser")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "add-action" }, [
-          _c("img", {
-            attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "add-icon" },
-          }),
-        ]),
-      ]),
+    return _c("div", { staticClass: "add-tasks" }, [
+      _c("h1", [_vm._v("Tâches à réaliser")]),
       _vm._v(" "),
-      _c("ul", { staticClass: "tasks-list" }),
+      _c("div", { staticClass: "add-action" }, [
+        _c("img", {
+          attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "add-icon" },
+        }),
+      ]),
     ])
   },
   function () {
@@ -38457,7 +38665,9 @@ var staticRenderFns = [
       _c("h2", [_vm._v("Tâches")]),
       _vm._v(" "),
       _c("div", { staticClass: "add-action" }, [
-        _c("img", { attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "" } }),
+        _c("img", {
+          attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "add-icon" },
+        }),
       ]),
     ])
   },
