@@ -2241,7 +2241,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      todayTask: [],
+      upcoming: [],
+      newTask: ""
+    };
+  },
+  created: function created() {
+    this.fetchTodayTasks();
+    this.fetchUpcoming();
+  },
+  methods: {
+    //** Upcoming Task method */
+    // Get upcoming tasks
+    fetchUpcoming: function fetchUpcoming() {
+      var _this = this;
+
+      fetch("/api/upcoming").then(function (res) {
+        return res.json();
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.upcoming = data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    // Add Upcoming task
+    addUpcomingTask: function addUpcomingTask() {},
+    //** Today Task method */
+    // Get today task
+    fetchTodayTasks: function fetchTodayTasks() {}
+  }
+});
 
 /***/ }),
 
@@ -6679,6 +6750,26 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /***/ ((module) => {
 
 module.exports = "/images/add.png?519c505f9e0cf8feff3dda54bd85b182";
+
+/***/ }),
+
+/***/ "./resources/js/images/del.png":
+/*!*************************************!*\
+  !*** ./resources/js/images/del.png ***!
+  \*************************************/
+/***/ ((module) => {
+
+module.exports = "/images/del.png?e27c64c3b8226ab6bf82111ad2b837aa";
+
+/***/ }),
+
+/***/ "./resources/js/images/edit.png":
+/*!**************************************!*\
+  !*** ./resources/js/images/edit.png ***!
+  \**************************************/
+/***/ ((module) => {
+
+module.exports = "/images/edit.png?ec9a7605f559503f7d03d61e1bc63407";
 
 /***/ }),
 
@@ -38176,43 +38267,127 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { attrs: { id: "right" } }, [
+    _c("h1", [_vm._v("Planification des tâches")]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("p", [_vm._v("Planifiez les tâches de vos projets en toute sérénité.")]),
+    _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _c("div", { staticClass: "upcoming" }, [
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "form",
+        { attrs: { action: "" }, on: { submit: _vm.addUpcomingTask } },
+        [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newTask,
+                expression: "newTask",
+              },
+            ],
+            attrs: { type: "text" },
+            domProps: { value: _vm.newTask },
+            on: {
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.newTask = $event.target.value
+              },
+            },
+          }),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "ul",
+        { staticClass: "tasks-list" },
+        _vm._l(_vm.upcoming, function (upcomingtask) {
+          return _c("li", { key: upcomingtask.id }, [
+            _c("div", { staticClass: "info" }, [
+              _c("div", { staticClass: "left" }, [
+                _c("label", { staticClass: "myCheckbox" }, [
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "test" },
+                    domProps: { checked: upcomingtask.completed },
+                    on: {
+                      change: function ($event) {
+                        return _vm.checkUpcoming(upcomingtask.taskId)
+                      },
+                    },
+                  }),
+                ]),
+                _vm._v(" "),
+                _c("h4", [_vm._v(_vm._s(upcomingtask.title))]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "right" }, [
+                _c("img", {
+                  attrs: { src: __webpack_require__(/*! ../images/edit.png */ "./resources/js/images/edit.png"), alt: "" },
+                }),
+                _vm._v(" "),
+                _c("img", {
+                  attrs: { src: __webpack_require__(/*! ../images/del.png */ "./resources/js/images/del.png"), alt: "" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.delUpcoming(upcomingtask.taskId)
+                    },
+                  },
+                }),
+              ]),
+            ]),
+          ])
+        }),
+        0
+      ),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "right" } }, [
-      _c("h1", [_vm._v("Planification des tâches")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "horizontal" }, [
-        _c("img", {
-          attrs: {
-            src: __webpack_require__(/*! ../images/horizontal.png */ "./resources/js/images/horizontal.png"),
-            alt: "horizontal",
-          },
-        }),
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "\n       Planifiez les tâches de vos projets en toute sérénité. \n    "
-        ),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "task" }, [
-        _c("div", { staticClass: "add-tasks" }, [
-          _c("h2", [_vm._v("Tâches en cours")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "add-action" }, [
-            _c("img", {
-              attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "add-icon" },
-            }),
-          ]),
-        ]),
+    return _c("div", { staticClass: "horizontal" }, [
+      _c("img", {
+        attrs: { src: __webpack_require__(/*! ../images/horizontal.png */ "./resources/js/images/horizontal.png"), alt: "horizontal" },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "task" }, [
+      _c("div", { staticClass: "add-tasks" }, [
+        _c("h2", [_vm._v("Tâches en cours")]),
         _vm._v(" "),
-        _c("ul", { staticClass: "tasks-list" }),
+        _c("div", { staticClass: "add-action" }, [
+          _c("img", {
+            attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "add-icon" },
+          }),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "tasks-list" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "add-tasks" }, [
+      _c("h2", [_vm._v("Tâches à réaliser")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "add-action" }, [
+        _c("img", { attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "" } }),
       ]),
     ])
   },

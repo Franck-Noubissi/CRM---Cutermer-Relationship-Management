@@ -297,9 +297,196 @@ img
                 right: -10%;
                 position: absolute;
             }
+        }  
+        
+        // RIGHT STYLES
+        #right {
+            position: relative;
+            grid-area: Right;
+            background-color: var(--white);
+            border-radius: 15px;
+            padding-top: 65px;
+            padding-left: 70px;
+            padding-right: 20px;
 
-        }      
+            h1 {
+                font-family: "MyriadProBold";
+                font-size: 24px;
+                font-weight: 400;
+                margin-bottom: 10px;
+            }
+
+            .horizontal {
+                img {
+                    width: 122px;
+                }
+
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-family: 'Open Sans', sans-serif;
+                font-size: 12px;
+                font-weight: 300;
+                width: 500px;
+            }
+
+            .user-icon {
+                position: absolute;
+                right: 42px;
+                top: 65px;
+                cursor: pointer;
+
+                img {
+                    height: 30px;
+                }
+            }
+
+            .tasks,
+            .upcoming {
+                margin-bottom: 1.3em;
+
+                .add-tasks {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    h2 {
+                        font-family: "MyriadProBold";
+                        font-size: 15px;
+                        font-weight: 400;
+                    }
+
+                    img {
+                        cursor: pointer;
+                    }
+                }
+
+                input[type="text"] {
+                    border: unset;
+                    border-bottom: 1px solid var(--customgrey);
+                    width: 100%;
+                    caret-color: var(--primary1);
+                }
+
+                ul.tasks-list {
+                    margin-top: 15px;
+
+                    li {
+                        display: flex;
+                        flex-direction: column;
+
+                        .info {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            cursor: pointer;
+                            padding: 0.3em;
+                            border-radius: 0.3em 3em;
+
+                            &:hover {
+                                background-color: #70707010;
+                                transition: all 400ms ease-in-out;
+                            }
+
+                            .left {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+
+                                label {
+                                    cursor: pointer;
+                                    margin-top: 0.3em;
+                                    padding-top: 0.4em;
+
+                                    input {
+                                        display: none;
+                                    }
+
+                                    span {
+                                        height: 20px;
+                                        width: 20px;
+                                        display: inline-block;
+                                        position: relative;
+                                        border-radius: 50px;
+                                        border: 2px solid var(--customgreen1);
+                                    }
+
+                                    [type=checkbox]:checked+span:before {
+                                        content: '\2714';
+                                        @extend .middle;
+                                        height: 20px;
+                                        width: 20px;
+                                        border-radius: 50px;
+                                        border: 2px solid var(--customgreen1);
+                                        background-color: var(--customgreen1);
+                                        opacity: 1;
+                                        font-size: 12px;
+                                        top: 45%;
+                                        color: var(--white);
+                                    }
+                                }
+
+                                h4 {
+                                    margin-left: 15px;
+                                    font-family: 'Open Sans', sans-serif;
+                                    font-size: 13px;
+                                    color: var(--primary2);
+                                    font-weight: 600;
+                                }
+                            }
+
+                            .right {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: space-between;
+
+                                img {
+                                    margin-right: 1em;
+                                    cursor: pointer;
+                                }
+
+                                button {
+                                    padding: 5px 31px;
+                                    border-radius: 50px;
+                                    border: unset;
+                                    box-shadow: unset !important;
+                                    width: 120px;
+                                    font-family: 'Open Sans', sans-serif;
+                                    font-size: 12px;
+                                    white-space: nowrap;
+                                }
+                            }
+                        }
+
+                        // form {
+                        //     @extend input[type="text"]
+                        // }
+                    }
+                }
+            }
+        }
     }      
+}
+
+.approved
+{
+    background-color: #15D4A150;
+    color: var(--customgreen1);
+}
+
+.inprogress 
+{
+    background-color: #0060FF20;
+    color: #0060FF;
+}
+
+.rejected
+{
+    background-color: #FF0E4620;
+    color: #FF0E46;
 }
 
 
