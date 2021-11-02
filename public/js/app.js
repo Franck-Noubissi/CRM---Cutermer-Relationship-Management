@@ -2279,6 +2279,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2307,7 +2308,52 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // Add Upcoming task
-    addUpcomingTask: function addUpcomingTask() {},
+    addUpcomingTask: function addUpcomingTask(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+
+      if (this.upcoming.length > 4) {
+        alert("Terminez d'abord les tâches ci-dessous pour en ajouter d'autres.");
+      } else {
+        var newTask = {
+          title: this.newTask,
+          waiting: true,
+          taskId: Math.random().toString(36).substring(7)
+        }; // POST request
+
+        fetch("/api/upcoming", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify(newTask)
+        }).then(function () {
+          return _this2.upcoming.push(newTask);
+        }); // Clear ou reset new task
+
+        this.newTask = "";
+      }
+    },
+    // Delete upcoming task
+    delUpcoming: function delUpcoming(taskId) {
+      var _this3 = this;
+
+      if (confirm("Etes-vous sûr de vouloir supprimer cette tâche ?")) {
+        fetch("/api/upcoming/".concat(taskId), {
+          method: 'delete'
+        }).then(function (res) {
+          return res.json();
+        }).then(function () {
+          _this3.upcoming = _this3.upcoming.filter(function (_ref2) {
+            var id = _ref2.taskId;
+            return id !== taskId;
+          });
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      }
+    },
     //** Today Task method */
     // Get today task
     fetchTodayTasks: function fetchTodayTasks() {}
@@ -38323,6 +38369,8 @@ var render = function () {
                       },
                     },
                   }),
+                  _vm._v(" "),
+                  _c("span"),
                 ]),
                 _vm._v(" "),
                 _c("h4", [_vm._v(_vm._s(upcomingtask.title))]),

@@ -44,6 +44,7 @@
                   :checked="upcomingtask.completed"
                   @change="checkUpcoming(upcomingtask.taskId)"
                 />
+                <span></span>
               </label>
 
               <h4>{{ upcomingtask.title }}</h4>
@@ -92,7 +93,48 @@ export default {
     },
 
     // Add Upcoming task
-    addUpcomingTask() {},
+    addUpcomingTask(e) {
+      e.preventDefault();
+
+      if (this.upcoming.length > 4) {
+        alert(
+          "Terminez d'abord les tâches ci-dessous pour en ajouter d'autres."
+        );
+      } else {
+        const newTask = {
+          title: this.newTask,
+          waiting: true,
+          taskId: Math.random().toString(36).substring(7),
+        };
+
+        // POST request
+        fetch("/api/upcoming", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newTask),
+        }).then(() => this.upcoming.push(newTask));
+
+        // Clear ou reset new task
+        this.newTask = "";
+      }
+    },
+
+    // Delete upcoming task
+    delUpcoming(taskId) {
+      if (confirm("Etes-vous sûr de vouloir supprimer cette tâche ?")) {
+        fetch(`/api/upcoming/${taskId}`, {
+          method: 'delete',
+          
+        }).then((res) => res.json())
+          .then(() => {
+            this.upcoming = this.upcoming.filter(
+              ({ taskId: id }) => id !== taskId
+            );
+          }).catch((err) => console.log(err));
+      }
+    },
 
     //** Today Task method */
     // Get today task

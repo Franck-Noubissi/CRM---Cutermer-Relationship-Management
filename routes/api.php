@@ -32,7 +32,7 @@ Route::post('/upcoming', function (Request $request) {
 Route::delete('/upcoming/{taskId}', function ($taskId) {
     DB::table('upcomings')->where('taskId', $taskId)->delete();
 
-    return "Tâche(s) supprimée(s)";
+    return 204;
 });
 
 
@@ -50,5 +50,5 @@ Route::post('/dailytask', function (Request $request) {
 Route::delete('/dailytask/{taskId}', function ($taskId) {
     DB::table('todays')->where('taskId', $taskId)->delete();
 
-    return "Tâche(s) supprimée(s)";
+    return 204;
 });
