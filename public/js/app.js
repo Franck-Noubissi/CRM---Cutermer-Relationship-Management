@@ -2341,7 +2341,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm("Etes-vous sûr de vouloir supprimer cette tâche ?")) {
         fetch("/api/upcoming/".concat(taskId), {
-          method: 'delete'
+          method: "delete"
         }).then(function (res) {
           return res.json();
         }).then(function () {
@@ -2354,9 +2354,31 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
+    // Check upcoming tasks
+    checkUpcoming: function checkUpcoming(taskId) {
+      var _this4 = this;
+
+      if (this.todayTask.lenght > 4) {
+        alert("Désolé, veuillez terminer les tâches à réaliser");
+        window.location.href = "/";
+      } else {
+        this.addDailyTask(taskId); // Delete this task from upcoming task table in db
+
+        fetch("/api/upcoming/".concat(taskId), {
+          method: "delete"
+        }).then(function () {
+          return _this4.upcoming = _this4.upcoming.filter(function (_ref3) {
+            var id = _ref3.taskId;
+            return id !== taskId;
+          });
+        });
+      }
+    },
     //** Today Task method */
     // Get today task
-    fetchTodayTasks: function fetchTodayTasks() {}
+    fetchTodayTasks: function fetchTodayTasks() {},
+    // Add daily task
+    addDailyTask: function addDailyTask(taskId) {}
   }
 });
 
@@ -38415,7 +38437,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "task" }, [
       _c("div", { staticClass: "add-tasks" }, [
-        _c("h2", [_vm._v("Tâches en cours")]),
+        _c("h2", [_vm._v("Tâches à réaliser")]),
         _vm._v(" "),
         _c("div", { staticClass: "add-action" }, [
           _c("img", {
@@ -38432,7 +38454,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "add-tasks" }, [
-      _c("h2", [_vm._v("Tâches à réaliser")]),
+      _c("h2", [_vm._v("Tâches")]),
       _vm._v(" "),
       _c("div", { staticClass: "add-action" }, [
         _c("img", { attrs: { src: __webpack_require__(/*! ../images/add.png */ "./resources/js/images/add.png"), alt: "" } }),

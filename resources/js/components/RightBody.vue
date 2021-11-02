@@ -10,7 +10,7 @@
 
     <div class="task">
       <div class="add-tasks">
-        <h2>Tâches en cours</h2>
+        <h2>Tâches à réaliser</h2>
 
         <div class="add-action">
           <img src="../images/add.png" alt="add-icon" />
@@ -22,7 +22,7 @@
 
     <div class="upcoming">
       <div class="add-tasks">
-        <h2>Tâches à réaliser</h2>
+        <h2>Tâches</h2>
 
         <div class="add-action">
           <img src="../images/add.png" alt="" />
@@ -125,20 +125,42 @@ export default {
     delUpcoming(taskId) {
       if (confirm("Etes-vous sûr de vouloir supprimer cette tâche ?")) {
         fetch(`/api/upcoming/${taskId}`, {
-          method: 'delete',
-          
-        }).then((res) => res.json())
+          method: "delete",
+        })
+          .then((res) => res.json())
           .then(() => {
             this.upcoming = this.upcoming.filter(
               ({ taskId: id }) => id !== taskId
             );
-          }).catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+
+    // Check upcoming tasks
+    checkUpcoming(taskId) {
+      if (this.todayTask.lenght > 4) {
+        alert("Désolé, veuillez terminer les tâches à réaliser");
+        window.location.href = "/";
+      } else {
+        this.addDailyTask(taskId);
+
+        // Delete this task from upcoming task table in db
+        fetch(`/api/upcoming/${taskId}`, { method: "delete" }).then(
+          () =>
+            (this.upcoming = this.upcoming.filter(
+              ({ taskId: id }) => id !== taskId
+            ))
+        );
       }
     },
 
     //** Today Task method */
     // Get today task
     fetchTodayTasks() {},
+
+    // Add daily task
+    addDailyTask(taskId) {},
   },
 };
 </script>
